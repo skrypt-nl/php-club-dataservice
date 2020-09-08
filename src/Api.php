@@ -118,4 +118,27 @@ class Api
 
         return $this->club;
     }
+
+    /**
+     * Get the club data
+     *
+     * @return Club
+     */
+    public function getMatch()
+    {
+        if($this->club) {
+            return $this->club;
+        }
+
+        $response = $this->request('clubgegevens');
+
+        $data = $response['gegevens'];
+        if (isset($response['bezoekadres'])) {
+            $data['bezoekadres'] = new Bezoekadres($this, $response['bezoekadres']);
+        }
+
+        $this->club = new Club($this, $data);
+
+        return $this->club;
+    }
 }
